@@ -1,0 +1,42 @@
+version: '3.9'
+
+services:
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:latest
+    volumes:
+      - ./config/otel-collector.yaml:/etc/otelcol-contrib/config.yaml
+    ports:
+      - "1888:1888"     # pprof extension (для профилирования)
+      - "8888:8888"     # Prometheus metrics (экспортер метрик коллектора)
+      - "8889:8889"     # Prometheus exporter (метрики от ресиверов)
+      - "13133:13133"   # health_check extension (liveness/readiness)
+      - "4317:4317"     # OTLP gRPC receiver (трассировки/метрики/логи)
+      - "4318:4318"     # OTLP HTTP receiver (трассировки/метрики/логи)
+      - "55679:55679"   # zPages extension (интерфейс диагностики)
+
+  jaeger:
+    image: jaegertracing/all-in-one:1.57
+    ports:
+      - "16686:16686"   # Jaeger UI (веб-интерфейс для просмотра трассировок)
+
+  db:
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: dev
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./db_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:6.0.9-alpine
+    container_name: redis
+    restart: always
+    ports:
+      - "6379:6379"
+
+volumes:
+  db_data:

@@ -1,0 +1,67 @@
+{
+  "version": 1,
+  "disable_existing_loggers": false,
+  "formatters": {
+    "simple": {
+      "format": "%(asctime)s - %(levelname)s - %(filename)s:%(lineno)d - [req_id=%(request_id)s idem=%(idempotency_key)s | trace_id=%(otelTraceID)s span_id=%(otelSpanID)s] - %(message)s "
+    },
+    "verbose": {
+      "format": "%(asctime)s - %(name)s - %(levelname)s - %(funcName)s:%(lineno)d - [req_id=%(request_id)s idem=%(idempotency_key)s] - %(message)s"
+    },
+    "uvicorn_default": {
+      "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    }
+  },
+  "handlers": {
+    "console": {
+      "class": "logging.StreamHandler",
+      "level": "DEBUG",
+      "formatter": "simple",
+      "stream": "ext://sys.stdout"
+    },
+    "file": {
+      "class": "logging.handlers.TimedRotatingFileHandler",
+      "level": "DEBUG",
+      "formatter": "verbose",
+      "when": "D",
+      "backupCount": 0,
+      "filename": "./logs/app.log"
+    },
+    "uvicorn_console": {
+      "class": "logging.StreamHandler",
+      "level": "INFO",
+      "formatter": "uvicorn_default",
+      "stream": "ext://sys.stdout"
+    },
+    "uvicorn_file": {
+      "class": "logging.handlers.TimedRotatingFileHandler",
+      "level": "INFO",
+      "formatter": "uvicorn_default",
+      "when": "D",
+      "backupCount": 0,
+      "filename": "./logs/uvicorn.log"
+    }
+  },
+  "loggers": {
+    "root": {
+      "level": "DEBUG",
+      "handlers": ["console"]
+    },
+    "app": {
+      "level": "DEBUG",
+      "handlers": ["console"]
+    },
+    "uvicorn": {
+      "level": "INFO",
+      "handlers": ["uvicorn_console"]
+    },
+    "uvicorn.error": {
+      "level": "INFO",
+      "handlers": ["uvicorn_console"]
+    },
+    "uvicorn.access": {
+      "level": "INFO",
+      "handlers": ["uvicorn_console"]
+    }
+  }
+}

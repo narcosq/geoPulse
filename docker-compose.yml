@@ -1,0 +1,170 @@
+version: '3.9'
+
+services:
+  # PostgreSQL Database
+  db:
+    image: postgres:15-alpine
+    container_name: geopulse-db
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-geopulse}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-geopulse_pass}
+      POSTGRES_DB: ${POSTGRES_DB:-geopulse}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-geopulse}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis
+  redis:
+    image: redis:7-alpine
+    container_name: geopulse-redis
+    restart: always
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Zookeeper for Kafka
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.5.0
+    container_name: geopulse-zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - "2181:2181"
+
+  # Kafka
+  kafka:
+    image: confluentinc/cp-kafka:7.5.0
+    container_name: geopulse-kafka
+    depends_on:
+      - zookeeper
+    ports:
+      - "${KAFKA_PORT:-9092}:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT_INTERNAL://kafka:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT_INTERNAL
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+    healthcheck:
+      test: ["CMD", "kafka-broker-api-versions", "--bootstrap-server", "localhost:9092"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # FastAPI Application
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: geopulse-api
+    restart: always
+    ports:
+      - "${API_PORT:-8000}:8000"
+    environment:
+      POSTGRES__DSN: postgresql+asyncpg://${POSTGRES_USER:-geopulse}:${POSTGRES_PASSWORD:-geopulse_pass}@db:5432/${POSTGRES_DB:-geopulse}
+      REDIS__DSN: redis://redis:6379/0
+      KAFKA__BOOTSTRAP_SERVERS: kafka:29092
+      CELERY__BROKER_URL: redis://redis:6379/0
+      CELERY__RESULT_BACKEND: redis://redis:6379/0
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+    volumes:
+      - ./app:/app/app
+      - ./config:/app/config
+    command: uvicorn app:create_app --host 0.0.0.0 --port 8000 --reload
+
+  # Celery Worker
+  celery-worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: geopulse-celery-worker
+    restart: always
+    environment:
+      POSTGRES__DSN: postgresql+asyncpg://${POSTGRES_USER:-geopulse}:${POSTGRES_PASSWORD:-geopulse_pass}@db:5432/${POSTGRES_DB:-geopulse}
+      REDIS__DSN: redis://redis:6379/0
+      KAFKA__BOOTSTRAP_SERVERS: kafka:29092
+      CELERY__BROKER_URL: redis://redis:6379/0
+      CELERY__RESULT_BACKEND: redis://redis:6379/0
+    env_file:
+      - .env
+    depends_on:
+      - db
+      - redis
+      - kafka
+    volumes:
+      - ./app:/app/app
+      - ./tasks:/app/tasks
+    command: celery -A tasks.celery_app worker --pool solo -l info
+
+  # Celery Beat (Scheduler)
+  celery-beat:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: geopulse-celery-beat
+    restart: always
+    environment:
+      POSTGRES__DSN: postgresql+asyncpg://${POSTGRES_USER:-geopulse}:${POSTGRES_PASSWORD:-geopulse_pass}@db:5432/${POSTGRES_DB:-geopulse}
+      REDIS__DSN: redis://redis:6379/0
+      CELERY__BROKER_URL: redis://redis:6379/0
+      CELERY__RESULT_BACKEND: redis://redis:6379/0
+    env_file:
+      - .env
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - ./app:/app/app
+      - ./tasks:/app/tasks
+    command: celery -A tasks.celery_app beat -l info
+
+  # OpenTelemetry Collector
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:latest
+    container_name: geopulse-otel-collector
+    volumes:
+      - ./config/otel-collector.yaml:/etc/otelcol-contrib/config.yaml
+    ports:
+      - "1888:1888"
+      - "8888:8888"
+      - "8889:8889"
+      - "13133:13133"
+      - "4317:4317"
+      - "4318:4318"
+      - "55679:55679"
+
+  # Jaeger
+  jaeger:
+    image: jaegertracing/all-in-one:1.57
+    container_name: geopulse-jaeger
+    ports:
+      - "16686:16686"
+
+volumes:
+  postgres_data:
+  redis_data:
+

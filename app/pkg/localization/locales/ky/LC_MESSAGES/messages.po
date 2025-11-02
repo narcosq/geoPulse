@@ -1,0 +1,108 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Credit Core Service 1.0\n"
+"Report-Msgid-Bugs-To: dev@example.com\n"
+"POT-Creation-Date: 2025-09-19 14:09+0300\n"
+"PO-Revision-Date: 2025-09-19 14:10+0300\n"
+"Last-Translator: Auto Migration Script\n"
+"Language-Team: ky <team@example.com>\n"
+"Language: ky\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. Migrated from ky.json
+msgid "errors.not_found"
+msgstr "Табылган жок"
+
+#. Migrated from ky.json
+msgid "errors.internal_error"
+msgstr "Сервердин ички катасы"
+
+#. Migrated from ky.json
+msgid "errors.validation_failed"
+msgstr "Текшерүү катасы"
+
+#. Migrated from ky.json
+msgid "errors.unauthorized"
+msgstr "Авторизацияланган эмес"
+
+#. Migrated from ky.json
+msgid "errors.forbidden"
+msgstr "Кирүүгө тыюу салынган"
+
+#. Migrated from ky.json
+msgid "errors.credit.invalid_principal.user"
+msgstr "Банктын же кредит түрүнүн туура эмес маалыматтары. Техникалык колдоого кайрылыңыз"
+
+#. Migrated from ky.json
+msgid "errors.credit.invalid_principal.developer"
+msgstr "Берилген негизги сумма банк же кредит түрү үчүн күтүлгөн диапазонго дал келбейт"
+
+#. Migrated from ky.json
+msgid "errors.credit.invalid_product.user"
+msgstr "Тандалган банк жана насыя тиби үчүн насыя продуктысы жеткиликтүү эмес"
+
+#. Migrated from ky.json
+msgid "errors.credit.invalid_product.developer"
+msgstr "Берилген банк жана насыя тиби үчүн насыя продуктысы же шарттар табылган жок"
+
+#. Migrated from ky.json
+msgid "errors.credit.invalid_min_principal.user"
+msgstr "Кредит суммасы бул банк үчүн жеткиликтүү минималдуу суммадан аз"
+
+#. Migrated from ky.json
+msgid "errors.credit.invalid_min_principal.developer"
+msgstr "Суралган сумма бул кредит түрү үчүн уруксат берилген минималдуу алгачкы төлөмдөн аз"
+
+#. Migrated from ky.json
+msgid "errors.credit.invalid_max_term.user"
+msgstr "Кредит мөөнөтү бул банк үчүн максималдуу уруксат берилген мөөнөттөн ашып кетти"
+
+#. Migrated from ky.json
+msgid "errors.credit.invalid_max_term.developer"
+msgstr "Суралган мөөнөт бул кредит түрү үчүн уруксат берилген максималдуу мөөнөттөн көп"
+
+#. Migrated from ky.json
+msgid "errors.credit.invalid_min_term.user"
+msgstr "Кредит мөөнөтү бул банк үчүн минималдуу уруксат берилген мөөнөттөн аз"
+
+#. Migrated from ky.json
+msgid "errors.credit.invalid_min_term.developer"
+msgstr "Суралган мөөнөт бул кредит түрү үчүн уруксат берилген минималдуу мөөнөттөн аз"
+
+#. Migrated from ky.json
+msgid "errors.credit.condition_not_found.user"
+msgstr "Бул банк же кредит түрү үчүн кредиттик шарттар табылган жок"
+
+#. Migrated from ky.json
+msgid "errors.credit.condition_not_found.developer"
+msgstr "Берилген параметрлер үчүн ылайыктуу кредиттик шарттар табылган жок (банк, кредит түрү, сумма, мөөнөт)"
+
+#. Migrated from ky.json
+msgid "errors.credit.invalid_down_payment.user"
+msgstr "Алгачкы төлөм туура эмес. Киргизилген сумманы текшериңиз"
+
+#. Migrated from ky.json
+msgid "errors.credit.invalid_down_payment.developer"
+msgstr "Алгачкы төлөм унаа баасынан көп же банктын эрежелерин бузат"
+
+#. Added for API endpoints
+msgid "api.healthz.title"
+msgstr "Кызматтын абалы"
+
+#. Added for API endpoints
+msgid "api.healthz.description"
+msgstr "Тиркеменин абалын текшерүүчү эндпоинттер (БД, Redis, uptime ж.б.)"
+
+#. Added for API endpoints
+msgid "api.healthz.docstring"
+msgstr ""
+"Kubernetes менен интеграция үчүн кызматтын абалын текшерүүчү эндпоинттер.\n"
+"\n"
+"Камтыйт:\n"
+"- /healthz — системанын толук текшерүүсү,\n"
+"- /healthz/live — liveness probe (тирүүбү кызмат),\n"
+"- /healthz/ready — readiness probe (суроолорду кабыл алууга даярбы),\n"
+"- /healthz/startup — startup probe (кызмат ишке кирдиби)."

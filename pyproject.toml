@@ -1,0 +1,50 @@
+[tool.poetry]
+name = "base"
+version = "0.1.0"
+description = "Базовый сервис"
+authors = ["zhabdisattarov <zhabdisattarov@nurtelecom.kg>"]
+readme = "README.md"
+packages = [{ include = "app" }]
+
+[tool.poetry.dependencies]
+python = "^3.13"
+aiohttp = "^3.12.15"
+pydantic-settings = "^2.10.1"
+sqlalchemy = "^2.0.36"
+asyncpg = "^0.30.0"
+psycopg2-binary = "^2.9.9"
+python-dotenv = "^1.0.1"
+dependency-injector = "^4.48.1"
+aiopg = "^1.4.0"
+redis = "^6.4.0"
+opentelemetry-api = "^1.37.0"
+opentelemetry-sdk = "^1.37.0"
+opentelemetry-exporter-otlp = "^1.37.0"
+opentelemetry-instrumentation = "^0.58b0"
+opentelemetry-instrumentation-fastapi = "^0.58b0"
+opentelemetry-instrumentation-sqlalchemy = "^0.58b0"
+opentelemetry-instrumentation-logging = "^0.58b0"
+opentelemetry-instrumentation-requests = "^0.58b0"
+opentelemetry-instrumentation-aiohttp-client = "^0.58b0"
+opentelemetry-instrumentation-redis = "^0.58b0"
+aiokafka = "^0.12.0"
+greenlet = "^3.2.4"
+sentry-sdk = {extras = ["fastapi"], version = "^2.38.0"}
+babel = "^2.16.0"
+polib = "^1.2.0"
+uvicorn = "^0.36.0"
+pyyaml = "^6.0.2"
+celery = {extras = ["redis"], version = "^5.4.0"}
+firebase-admin = "^7.0.0"
+python-telegram-bot = "^21.0.0"
+googlemaps = "^4.10.0"
+geopy = "^2.4.1"
+shapely = "^2.0.4"
+
+
+[tool.poetry.group.dev.dependencies]
+alembic = "^1.16.5"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

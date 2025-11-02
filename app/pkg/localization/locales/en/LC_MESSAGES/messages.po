@@ -1,0 +1,117 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Credit Core Service 1.0\n"
+"Report-Msgid-Bugs-To: dev@example.com\n"
+"POT-Creation-Date: 2025-09-19 14:09+0300\n"
+"PO-Revision-Date: 2025-09-19 14:10+0300\n"
+"Last-Translator: Auto Migration Script\n"
+"Language-Team: en <team@example.com>\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. Migrated from en.json
+msgid "errors.not_found"
+msgstr "Not found"
+
+#. Migrated from en.json
+msgid "errors.internal_error"
+msgstr "Internal server error"
+
+#. Migrated from en.json
+msgid "errors.validation_failed"
+msgstr "Validation failed"
+
+#. Migrated from en.json
+msgid "errors.unauthorized"
+msgstr "Unauthorized"
+
+#. Migrated from en.json
+msgid "errors.forbidden"
+msgstr "Forbidden"
+
+#. Migrated from en.json
+msgid "errors.credit.invalid_principal.user"
+msgstr "Invalid bank data or credit type. Please contact technical support"
+
+#. Migrated from en.json
+msgid "errors.credit.invalid_principal.developer"
+msgstr ""
+"Provided principal amount does not match the expected range for bank or "
+"credit type"
+
+#. Migrated from en.json
+msgid "errors.credit.invalid_product.user"
+msgstr "Credit product is not available for the selected bank and credit type"
+
+#. Migrated from en.json
+msgid "errors.credit.invalid_product.developer"
+msgstr ""
+"Credit product or conditions not found for the given bank_type and credit_type"
+
+#. Migrated from en.json
+msgid "errors.credit.invalid_min_principal.user"
+msgstr "Credit amount is below the minimum available for this bank"
+
+#. Migrated from en.json
+msgid "errors.credit.invalid_min_principal.developer"
+msgstr ""
+"Requested amount is less than min down payment allowed for this credit type"
+
+#. Migrated from en.json
+msgid "errors.credit.invalid_max_term.user"
+msgstr "Credit term exceeds the maximum allowed for this bank"
+
+#. Migrated from en.json
+msgid "errors.credit.invalid_max_term.developer"
+msgstr ""
+"Requested term in months is greater than max term allowed for this credit "
+"type"
+
+#. Migrated from en.json
+msgid "errors.credit.invalid_min_term.user"
+msgstr "Credit term is below the minimum allowed for this bank"
+
+#. Migrated from en.json
+msgid "errors.credit.invalid_min_term.developer"
+msgstr ""
+"Requested term in months is less than min term allowed for this credit type"
+
+#. Migrated from en.json
+msgid "errors.credit.condition_not_found.user"
+msgstr "Credit conditions not found for this bank or credit type"
+
+#. Migrated from en.json
+msgid "errors.credit.condition_not_found.developer"
+msgstr ""
+"No matching credit condition found for given parameters (bank, credit type, "
+"amount, term)"
+
+#. Migrated from en.json
+msgid "errors.credit.invalid_down_payment.user"
+msgstr "Down payment is incorrect. Please check the entered amount"
+
+#. Migrated from en.json
+msgid "errors.credit.invalid_down_payment.developer"
+msgstr "Down payment is greater than vehicle price or violates bank rules"
+
+#. Added for API endpoints
+msgid "api.healthz.title"
+msgstr "Health Check"
+
+#. Added for API endpoints
+msgid "api.healthz.description"
+msgstr "Comprehensive health check endpoints (DB, Redis, uptime, etc.)"
+
+#. Added for API endpoints
+msgid "api.healthz.docstring"
+msgstr ""
+"Health check endpoints for Kubernetes probes and monitoring.\n"
+"\n"
+"Includes:\n"
+"- /healthz — full system check,\n"
+"- /healthz/live — liveness probe,\n"
+"- /healthz/ready — readiness probe,\n"
+"- /healthz/startup — startup probe."
